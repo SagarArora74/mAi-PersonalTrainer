@@ -12,6 +12,8 @@ function App() {
     daysPerWeek: ""
   });
 
+const [message, setMessage] = useState("");
+const [error, setError] = useState("");
 
 const handleChange = (event) => {
   const {name,value} = event.target;
@@ -24,6 +26,8 @@ const handleChange = (event) => {
 
 const handleSubmit = async (event) => {
   event.preventDefault();
+  setMessage("");
+  setError("");
 
   try {
     const response = await fetch("http://localhost:5000/api/profile", {
@@ -41,9 +45,16 @@ const handleSubmit = async (event) => {
     });
     const data = await response.json();
 
-    console.log(data);
+    if(!response.ok) {
+      setError(data.message);
+      return;
+    }
+
+    setMessage(data.message);
+
   } catch (error) {
-    console.error("Error:", error)
+    console.error("Error:", error);
+    setError("Unable to connect to the server.");
   }
 
 };
@@ -53,6 +64,9 @@ return (
     <h1> AI Fitness Coach</h1>
 
     <h2> Tell me about yourself</h2>
+
+    {message && <p>{message}</p>}
+    {error && <p>{error}</p>}
     
     <form onSubmit = {handleSubmit}>
       <div>
