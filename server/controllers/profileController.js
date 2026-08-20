@@ -1,8 +1,10 @@
 const profileSchema = require("../validators/profileValidator");
+const Profile = require("../models/Profile");
 
-const createProfile = (req,res) => {
+const createProfile = async (req,res) => {
     try {
         const profile = profileSchema.parse(req.body);
+        const savedProfile = await Profile.create(profile);
 
         res.status(201).json({
             message: "Profile created Successfully",

@@ -123,7 +123,7 @@ return (
           <option value="">Select activity level</option>
           <option value="lowly_active">Lowly Active (&lt; 3k steps)</option>
           <option value="moderately_active">Moderately Active (5-6k steps)</option>
-          <option value="">Highly Active (&gt; 10k steps)</option>
+          <option value="highly_active">Highly Active (&gt; 10k steps)</option>
         </select>
       </div>
 
