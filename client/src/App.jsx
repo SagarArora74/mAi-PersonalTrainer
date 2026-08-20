@@ -22,10 +22,30 @@ const handleChange = (event) => {
   });
 };
 
-const handleSubmit = (event) => {
+const handleSubmit = async (event) => {
   event.preventDefault();
 
-  console.log(formData);
+  try {
+    const response = await fetch("http://localhost:5000/api/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body:JSON.stringify({
+        ...formData,
+        age: Number(formData.age),
+        height: Number(formData.height),
+        weight:Number(formData.weight),
+        daysPerWeek: Number(formData.daysPerWeek)
+      })
+    });
+    const data = await response.json();
+
+    console.log(data);
+  } catch (error) {
+    console.error("Error:", error)
+  }
+
 };
 
 return (
@@ -117,10 +137,10 @@ return (
           onChange={handleChange}
         >
           <option value="">Select diet</option>
-          <option value="vegetarian">Attention Seeker(Vegetarian)</option>
-          <option value="">Non-Vegetarian</option>
-          <option value="eggetarian">Eggitarian (bruhhh...)</option>
-          <option value="began">Bitch (Vegan)</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="non_vegetarian">Non-Vegetarian</option>
+          <option value="eggetarian">Eggitarian</option>
+          <option value="vegan">Vegan</option>
         </select>
       </div>
 
