@@ -8,7 +8,7 @@ const profileSchema = z.object({
     goal: z.enum([
         "weight_loss",
         "muscle_gain",
-        "maintainence"
+        "maintenance"
     ]),
 
     daily_physical_activity: z.enum([
