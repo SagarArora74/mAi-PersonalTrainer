@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 
 const User = require("../models/user");
 const registerSchema = require("../validators/registerValidator");
+const loginSchema = require("../validators/loginValidator");
 
 const registerUser = async (req,res) => {
     try {
@@ -52,6 +53,62 @@ const registerUser = async (req,res) => {
     }
 };
 
+const loginUser = async (req,res) => {
+    try {
+        // validate incoming data by loginSchema
+        const loginData = loginSchema.parse(req.body);
+
+        // Find the user by email
+        const user = await User.findOne({
+            email: loginData.email
+        });
+
+        if(!user) {
+            return res.status(401).json({
+                message: "Invalid email or password"
+            });
+        }
+        // compare entered password with stored hash
+
+        const passwordMatch = await bcrypt.compare(
+            loginData.password,
+            user.password
+        );
+
+        if(!passwordMatch) {
+            return res.status(401).json({
+                message: "Invalid email or password"
+            });
+        }
+
+        // login successfull
+
+        res.status(200).json({
+            message:"Login Successful",
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
+
+    } catch (error) {
+        if (error.name === "ZodError") {
+            return res.status(400).json({
+                message: "Invalid login data",
+                errors: error.issues
+            });
+        }
+
+        console.error("Login error:" ,error);
+
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+};
+
 module.exports = {
-    registerUser
+    registerUser,
+    loginUser
 };
