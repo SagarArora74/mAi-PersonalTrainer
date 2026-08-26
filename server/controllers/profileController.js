@@ -49,7 +49,44 @@ const getProfile = async (req,res) => {
     }
 };
 
+const updateProfile = async (req,res) => {
+    try {
+        const profile = profileSchema.parse(req.body);
+
+        const updatedProfile = await Profile.findOneAndUpdate(
+            {
+                user:req.user.userId
+            },
+            {
+                ...profile
+            },
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if(!updatedProfile) {
+            return res.status(404).json({
+                message: "Profile not found"
+            });
+        }
+        res.status(200).json({
+            message: "Profile updated successfully",
+            profile: updatedProfile
+        });
+    } catch (error) {
+        console.error("Update profile error: ", error);
+
+        res.status(400).json({
+            message: "Profile update failed",
+            errors: error.message
+        });
+    }
+};
+
 module.exports = {
     createProfile,
-    getProfile
+    getProfile,
+    updateProfile
 };
