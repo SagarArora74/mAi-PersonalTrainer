@@ -1,7 +1,7 @@
-import Register from "./Register";
+import Profile from "./Profile";
 
 function App() {
-    return <Register />;
+    return <Profile />;
 }
 
 export default App;
