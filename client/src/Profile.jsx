@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Profile() {
     const [formData, setFormData] = useState({
@@ -13,6 +13,36 @@ function Profile() {
     });
 
     const [message, setMessage] = useState("");
+    const [existingProfile, setExistingProfile] = useState(null);
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() =>{
+        const fetchProfile = async () => {
+            try {
+                const token = localStorage.getItem("token");
+
+                const response = await fetch(
+                    "http://localhost:5000/api/profile",
+                    {
+                        methodd: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+                const data = await response.json();
+
+                if(response.ok) {
+                    setExistingProfile(data.profile);
+                }
+            } catch (error) {
+                console.error("Fetch profile error: ", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProfile();
+    },[]);
 
     const handleChange = (e) => {
         setFormData({
@@ -59,6 +89,28 @@ function Profile() {
             setMessage("Something went wrong")
         }
     };
+
+    if (loading) {
+        return <p> Loading profile...</p>;
+    }
+
+    if (existingProfile) {
+        return (
+            <div>
+                <h2>Your Profile</h2>
+
+                <p>Age: {existingProfile.age}</p>
+                <p>Height: {existingProfile.height}</p>
+                <p>Weight: {existingProfile.weight}</p>
+                <p>Goal: {existingProfile.goal}</p>
+                <p>Activity: {existingProfile.daily_physical_activity}</p>
+                <p>Experience: {existingProfile.experience}</p>
+                <p>Diet: {existingProfile.diet}</p>
+                <p>Days per week: {existingProfile.daysPerWeek}</p>
+            </div>
+        );
+    }
+
     return (
         <div>
             <h2>Create Profile</h2>

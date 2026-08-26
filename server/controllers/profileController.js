@@ -24,6 +24,32 @@ const createProfile = async (req,res) => {
     }
 };
 
+const getProfile = async (req,res) => {
+    try {
+        const profile = await Profile.findOne({
+            user: req.user.userId
+        });
+        
+        if(!profile) {
+            return res.status(404).json({
+                message: "Profile not found"
+            });
+        }
+
+        res.status(200).json({
+            message: "Profile fetched successfully",
+            profile
+        });
+    } catch (error) {
+        console.error("Get profile error: ",error);
+
+        res.status(500).json({
+            message: "Failed to fetch profile"
+        });
+    }
+};
+
 module.exports = {
-    createProfile
+    createProfile,
+    getProfile
 };
