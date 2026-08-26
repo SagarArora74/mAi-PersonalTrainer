@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
     const [formData, setFormData] = useState({
@@ -16,6 +17,12 @@ function Profile() {
     const [existingProfile, setExistingProfile] = useState(null);
     const [loading, setLoading] = useState(true)
     const [isEditing, setIsEditing] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/");
+    };
 
     useEffect(() =>{
         const fetchProfile = async () => {
@@ -166,6 +173,9 @@ function Profile() {
 
                 <button onClick={handleEdit}>
                     Edit Profile
+                </button>
+                <button onClick={handleLogout}>
+                    Logout
                 </button>
                 {message && <p>{message} </p>}
             </div>
