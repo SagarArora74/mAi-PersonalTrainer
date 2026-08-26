@@ -61,7 +61,7 @@ const updateProfile = async (req,res) => {
                 ...profile
             },
             {
-                new: true,
+                returnDocument: "aftre",
                 runValidators: true
             }
         );

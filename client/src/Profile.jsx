@@ -15,6 +15,7 @@ function Profile() {
     const [message, setMessage] = useState("");
     const [existingProfile, setExistingProfile] = useState(null);
     const [loading, setLoading] = useState(true)
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() =>{
         const fetchProfile = async () => {
@@ -90,11 +91,66 @@ function Profile() {
         }
     };
 
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await fetch(
+                "http://localhost:5000/api/profile",
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization":`Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        ...formData,
+                        age:Number(formData.age),
+                        height: Number(formData.height),
+                        weight: Number(formData.weight),
+                        daysPerWeek: Number(formData.daysPerWeek)
+                    })
+                }
+            );
+            const data = await response.json();
+
+            if (response.ok) {
+                setExistingProfile(data.profile);
+                setIsEditing(false);
+                setMessage(data.message);
+            } else {
+                setMessage(data.message || "Profile update failed");
+            }
+
+            console.log(data);
+        } catch (error) {
+            console.error("Update profile error: ", error);
+            setMessage("Something went wrong");
+        }
+    };
+
+    const handleEdit = () => {
+        setFormData({
+            age: existingProfile.age,
+            height: existingProfile.height,
+            weight: existingProfile.weight,
+            goal: existingProfile.goal,
+            daily_physical_activity: existingProfile.daily_physical_activity,
+            experience: existingProfile.experience,
+            diet: existingProfile.diet,
+            daysPerWeek: existingProfile.daysPerWeek
+
+        });
+        setIsEditing(true);
+    }
+
     if (loading) {
         return <p> Loading profile...</p>;
     }
 
-    if (existingProfile) {
+    if (existingProfile && !isEditing) {
         return (
             <div>
                 <h2>Your Profile</h2>
@@ -107,6 +163,11 @@ function Profile() {
                 <p>Experience: {existingProfile.experience}</p>
                 <p>Diet: {existingProfile.diet}</p>
                 <p>Days per week: {existingProfile.daysPerWeek}</p>
+
+                <button onClick={handleEdit}>
+                    Edit Profile
+                </button>
+                {message && <p>{message} </p>}
             </div>
         );
     }
@@ -115,7 +176,7 @@ function Profile() {
         <div>
             <h2>Create Profile</h2>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={isEditing ? handleUpdate : handleSubmit}>
 
                 <div>
                     <label>Age:</label>
@@ -225,7 +286,7 @@ function Profile() {
                 </div>
 
                 <button type="submit">
-                    Create Profile
+                    {isEditing ? "Save Changes" : "Create Profile"}
                 </button>
 
             </form>
