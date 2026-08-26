@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Register() {
+
+    const navigate = useNavigate();
     
     const [formData, setFormData] = useState({
         name: "",
@@ -38,8 +41,18 @@ function Register() {
 
             const data = await response.json();
 
-            setMessage(data.message);
+            if(response.ok) {
+
+            localStorage.setItem("token",data.token);
+            setMessage("Registration successful");
+
+            navigate("/profile");
+
+            } else {
+                setMessage(data.message);
+            }
             console.log(data);
+
         } catch (error) {
             console.error("Registration error:", error);
             setMessage("Something went wrong");
