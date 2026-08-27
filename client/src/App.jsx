@@ -4,27 +4,30 @@ import Login from "./Login"
 import Register from "./Register"
 import Profile from "./Profile"
 import ProtectedRoute from "./ProtectedRoute";
+import AuthProvider from "./AuthContext";
 
 function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-
-                <Route path="/" element={<Login />} />
-
-                <Route path="/register" element={<Register /> }/>
-
-                <Route 
-                    path="/profile" 
-                    element={
-                    <ProtectedRoute>
-                        <Profile />
-                    </ProtectedRoute>
-                    }
-                />
-
-            </Routes>
-        </BrowserRouter>
+        <AuthProvider>
+            <BrowserRouter>
+                <Routes>
+        
+                    <Route path="/" element={<Login />} />
+        
+                    <Route path="/register" element={<Register /> }/>
+        
+                    <Route 
+                        path="/profile" 
+                        element={
+                        <ProtectedRoute>
+                            <Profile />
+                        </ProtectedRoute>
+                        }
+                    />
+    
+                </Routes>
+            </BrowserRouter>
+        </AuthProvider>
     );
 }
 

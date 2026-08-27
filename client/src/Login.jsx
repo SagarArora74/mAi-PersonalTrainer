@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 function Login() {
 
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const [formData , setFormData] = useState({
         email: "",
@@ -37,9 +39,9 @@ function Login() {
             const data = await response.json();
 
             if (response.ok) {
-                localStorage.setItem("token",data.token);
-                setMessage("Login Successful");
+                login(data.token);
                 navigate("/profile");
+                setMessage("Login Successful");
                 console.log(data);
             } else {
                 setMessage(data.message);
