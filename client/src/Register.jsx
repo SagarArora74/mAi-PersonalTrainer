@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "./AuthContext";
 
 function Register() {
 
     const navigate = useNavigate();
+    const { login } = useAuth();
     
     const [formData, setFormData] = useState({
         name: "",
@@ -43,7 +45,7 @@ function Register() {
 
             if(response.ok) {
 
-            localStorage.setItem("token",data.token);
+            login(data.token);
             setMessage("Registration successful");
 
             navigate("/profile");

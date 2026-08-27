@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 function Profile() {
     const [formData, setFormData] = useState({
         age: "",
+        gender:"",
         height: "",
         weight: "",
         goal: "",
@@ -141,6 +142,7 @@ function Profile() {
     const handleEdit = () => {
         setFormData({
             age: existingProfile.age,
+            gender: existingProfile.gender,
             height: existingProfile.height,
             weight: existingProfile.weight,
             goal: existingProfile.goal,
@@ -163,6 +165,7 @@ function Profile() {
                 <h2>Your Profile</h2>
 
                 <p>Age: {existingProfile.age}</p>
+                <p>Gender: {existingProfile.gender}</p>
                 <p>Height: {existingProfile.height}</p>
                 <p>Weight: {existingProfile.weight}</p>
                 <p>Goal: {existingProfile.goal}</p>
@@ -197,6 +200,20 @@ function Profile() {
                         onChange={handleChange}
                         required
                     />
+                </div>
+
+                <div>
+                    <label>Gender:</label>
+                    <select
+                        name = "gender"
+                        value = {formData.gender}
+                        onChange={handleChange}
+                        required
+                    >
+                        <option value = "">Select gender</option>
+                        <option value = "male">Male</option>
+                        <option value = "female">Female</option>
+                    </select>
                 </div>
 
                 <div>

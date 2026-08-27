@@ -2,6 +2,7 @@ const {z} = require ("zod");
 
 const profileSchema = z.object({
     age: z.number().min(13).max(100),
+    gender: z.enum(["male","female"]),
     height: z.number().positive(),
     weight: z.number().positive(),
 
