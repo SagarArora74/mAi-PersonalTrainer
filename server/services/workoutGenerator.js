@@ -40,25 +40,12 @@ const exerciseLibrary = {
     ]
 };
 
-const createExercises = (muscleGroups,experience) => {
-    let sets = 3;
-    let reps = 12;
-
-    if(experience==="beginner") {
-        sets = 3;
-        reps = 12;
-    }
-
-    if(experience === "intermediate") {
-        sets = 3;
-        reps = 10;
-    }
-
-    if(experience === "advanced") {
-        sets = 4;
-        reps = 10;
-    }
+const createExercises = (muscleGroups,goal,experience) => {
+    const settings = getWorkoutSettings(
+        goal,
+        experience
     
+    );
     const exercises = [];
 
     muscleGroups.forEach((muscle) => {
@@ -71,11 +58,85 @@ const createExercises = (muscleGroups,experience) => {
 
         exercises.push({
             name: selectedExercise,
-            sets,
-            reps
+            sets: settings.sets,
+            reps: settings.reps,
+            restTime: settings.restTime
         });
     });
     return exercises;
+};
+
+const getWorkoutSettings = (goal, experience) => {
+    if (goal === "weight_loss") {
+        if (experience === "beginner") {
+            return {
+                sets: 3,
+                reps: 12,
+                restTime: 60
+            };
+        }
+
+        if (experience === "intermediate") {
+            return {
+                sets: 3,
+                reps: 12,
+                restTime: 45
+            };
+        }
+
+        return {
+            sets: 4,
+            reps: 12,
+            restTime: 45
+        };
+    }
+
+    if (goal === "muscle_gain") {
+        if (experience === "beginner") {
+            return {
+                sets: 3,
+                reps: 10,
+                restTime: 90
+            };
+        }
+
+        if (experience === "intermediate") {
+            return {
+                sets: 4,
+                reps: 10,
+                restTime: 90
+            };
+        }
+
+        return {
+            sets: 4,
+            reps: 8,
+            restTime: 120
+        };
+    }
+
+    // maintenance
+    if (experience === "beginner") {
+        return {
+            sets: 3,
+            reps: 12,
+            restTime: 60
+        };
+    }
+
+    if (experience === "intermediate") {
+        return {
+            sets: 3,
+            reps: 10,
+            restTime: 75
+        };
+    }
+
+    return {
+        sets: 4,
+        reps: 10,
+        restTime: 90
+    };
 };
 
 const generateWorkoutPlan = (profile) => {
@@ -144,6 +205,7 @@ const generateWorkoutPlan = (profile) => {
         title: `Day ${index + 1}`,
         exercises: createExercises(
             muscleGroups,
+            goal,
             experience
         )
     }));

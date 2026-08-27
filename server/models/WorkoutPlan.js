@@ -2,19 +2,29 @@ const mongoose = require("mongoose");
 
 const exerciseSchema = new mongoose.Schema(
     {
-        name:{
+        name: {
             type: String,
             required: true
         },
 
         sets: {
-            type: Number,
-            required: true
+            type: Number
         },
 
         reps: {
-            type: Number,
-            required: true
+            type: String
+        },
+
+        restPeriod: {
+            type: String
+        },
+
+        duration: {
+            type: String
+        },
+
+        intensity: {
+            type: String
         }
     },
     {
@@ -22,21 +32,25 @@ const exerciseSchema = new mongoose.Schema(
     }
 );
 
-const workoutDaySchema = new mongoose.Schema (
+const workoutDaySchema = new mongoose.Schema(
     {
-        day:{
-            type: Number,
+        day: {
+            type: String,
             required: true
         },
 
-        title: {
+        focus: {
             type: String,
             required: true
         },
 
         exercises: {
             type: [exerciseSchema],
-            required: true
+            default: []
+        },
+
+        notes: {
+            type: String
         }
     },
     {

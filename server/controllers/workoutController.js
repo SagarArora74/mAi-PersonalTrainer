@@ -5,6 +5,17 @@ const {
     generateWorkoutPlan
 } = require("../services/workoutGenerator");
 
+const {
+    generateAIPlan 
+} = require("../services/aiService");
+
+const {
+    calculateBMR,
+    calculateTDEE,
+    calculateCalorieGoal,
+    calculateProteinGoal
+} = require("../services/fitnessCalculator");
+
 const createWorkoutPlan = async (req,res) => {
     try {
         const profile = await Profile.findOne({
@@ -16,6 +27,29 @@ const createWorkoutPlan = async (req,res) => {
                 message: "Profile not found"
             });
         }
+        const bmr = calculateBMR(profile);
+
+        const tdee = calculateTDEE(
+            bmr,
+            profile.daily_physical_activity
+        );
+        const calorieGoal = calculateCalorieGoal(tdee,
+            profile.goal
+        );
+
+        const proteinGoal = calculateProteinGoal(
+            profile.weight,
+            profile.goal
+        );
+
+        const nutrition = {
+            bmr:Math.round(bmr),
+            tdee:Math.round(tdee),
+            calorieGoal:Math.round(calorieGoal),
+            proteinGoa: Math.round(proteinGoal)
+        };
+        const aiPlan = await generateAIPlan(profile,nutrition);
+        const parsedPlan = JSON.parse(aiPlan);
 
         const existingWorkoutPlan = await WorkoutPlan.findOne({
             user: req.user.userId
@@ -28,14 +62,14 @@ const createWorkoutPlan = async (req,res) => {
             });
         }
 
-        const plan = generateWorkoutPlan(profile);
+        //const plan = generateWorkoutPlan(profile);
 
         const workoutPlan = await WorkoutPlan.create({
             user: req.user.userId,
             goal: profile.goal,
             experience: profile.experience,
             daysPerWeek: profile.daysPerWeek,
-            plan
+            plan: parsedPlan.workoutPlan.schedule
         });
 
         res.status(201).json({
