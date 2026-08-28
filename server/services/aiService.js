@@ -122,8 +122,6 @@ Use exactly this structure:
 }
 
 
-
-
 module.exports ={
     testGemini,
     generateAIPlan

@@ -8,6 +8,9 @@ const {
     calculateProteinGoal
 } = require("../services/fitnessCalculator");
 
+const { generateAIPlan } = require("../services/aiService");
+
+
 const createDietPlan = async (req,res) => {
     try {
         const profile = await Profile.findOne({
@@ -36,6 +39,16 @@ const createDietPlan = async (req,res) => {
             profile.weight,
             profile.goal
         );
+        
+        const nutrition = {
+            bmr: Math.round(bmr),
+            tdee: Math.round(tdee),
+            calorieGoal: Math.round(caloridGoal),
+            proteinGoal: Math.round(proteinGoal)
+        };
+
+        const aiPlan = await generateAIPlan(profile,nutrition);
+        const parsedPlan = JSON.parse(aiPlan);
 
         const existingDietPlan = await DietPlan.findOne({
             user: req.user.userId

@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const dietRoutes = require("./routes/dietRoutes");
 const connectDB =require("./config/db");
 const workoutRoutes = require("./routes/workoutRoutes");
+const aiPlanRoutes = require("./routes/aiPlanRoutes");
 
 const app = express();
 
@@ -34,6 +35,8 @@ app.use("/api/profile",profileRoutes);
 app.use("/api/auth" , authRoutes);
 app.use("/api/diet", dietRoutes);
 app.use("/api/workout", workoutRoutes);
+app.use("/api/ai-plan",aiPlanRoutes);
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on Port ${PORT}`);
