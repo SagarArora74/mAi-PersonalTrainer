@@ -25,6 +25,24 @@ const generatePlan = async (req,res) => {
             });
         }
 
+        const existingWorkoutPlan = await WorkoutPlan.findOne({
+            user: req.user.userId
+        });
+
+        const existingDietPlan = await DietPlan.findOne({
+            user:req.user.userId
+        });
+
+        const regenerate = req.query.regenerate === "true";
+
+        if(existingWorkoutPlan && existingDietPlan && !regenerate) {
+            return res.status(200).json({
+                message: "AI plans already exist",
+                workoutPlan: existingWorkoutPlan,
+                dietPlan: existingDietPlan
+            })
+        }
+
         const bmr = calculateBMR(profile);
 
         const tdee = calculateTDEE(
@@ -59,14 +77,6 @@ const generatePlan = async (req,res) => {
         const dietData = parsedPlan.dietPlan;
 
         const workoutData = parsedPlan.workoutPlan;
-
-        const existingWorkoutPlan = await WorkoutPlan.findOne({
-            user: req.user.userId
-        });
-
-        const existingDietPlan = await DietPlan.findOne({
-            user: req.user.userId
-        });
 
         let workoutPlan ;
 
