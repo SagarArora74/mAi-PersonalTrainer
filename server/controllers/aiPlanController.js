@@ -40,7 +40,7 @@ const generatePlan = async (req,res) => {
                 message: "AI plans already exist",
                 workoutPlan: existingWorkoutPlan,
                 dietPlan: existingDietPlan
-            })
+            });
         }
 
         const bmr = calculateBMR(profile);
