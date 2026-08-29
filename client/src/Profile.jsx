@@ -18,6 +18,7 @@ function Profile() {
     const [existingProfile, setExistingProfile] = useState(null);
     const [loading, setLoading] = useState(true)
     const [isEditing, setIsEditing] = useState(false);
+    const [profileCreated, setProfileCreated] = useState(false);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -33,7 +34,7 @@ function Profile() {
                 const response = await fetch(
                     "http://localhost:5000/api/profile",
                     {
-                        methodd: "GET",
+                        method: "GET",
                         headers: {
                             "Authorization": `Bearer ${token}`
                         }
@@ -87,6 +88,7 @@ function Profile() {
 
             if(response.ok) {
                 setMessage(data.message);
+                setProfileCreated(true);
             } else {
                 setMessage(data.message || "Profile creation failed");
             }
@@ -177,10 +179,18 @@ function Profile() {
                 <button onClick={handleEdit}>
                     Edit Profile
                 </button>
+                <button onClick = {() => navigate("/dashboard")}>
+                    Dashboard
+                </button>
                 <button onClick={handleLogout}>
                     Logout
                 </button>
                 {message && <p>{message} </p>}
+                {profileCreated && (
+                    <button onClick = {() => navigate("/dashboard")}>
+                        Go to Dashboard
+                    </button>
+                )}
             </div>
         );
     }
