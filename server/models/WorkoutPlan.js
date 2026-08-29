@@ -94,9 +94,22 @@ const workoutPlanSchema = new mongoose.Schema(
             max: 7
         },
 
+        splitName: {
+            type: String
+        },
+
+        description: {
+            type: String
+        },
+
         plan: {
             type: [workoutDaySchema],
             required: true
+        },
+
+        guidelines: {
+            type: [String],
+            defaule: []
         }
     },
     {

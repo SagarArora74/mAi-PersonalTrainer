@@ -69,20 +69,29 @@ const generatePlan = async (req,res) => {
         });
 
         let workoutPlan ;
+
         if(existingWorkoutPlan) {
             existingWorkoutPlan.goal = profile.goal;
             existingWorkoutPlan.experience = profile.experience;
             existingWorkoutPlan.daysPerWeek = profile.daysPerWeek;
             existingWorkoutPlan.plan = workoutData.schedule;
+            existingWorkoutPlan.splitName = workoutData.splitName;
+            existingWorkoutPlan.description = workoutData.description;
+            existingWorkoutPlan.guidelines = parsedPlan.trainerGuidelines;
 
             workoutPlan = await existingWorkoutPlan.save();
+
         } else {
             workoutPlan = await WorkoutPlan.create({
+
                 user: req.user.userId,
                 goal: profile.goal,
                 experience: profile.experience,
                 daysPerWeek: profile.daysPerWeek,
-                plan: workoutData.schedule
+                plan: workoutData.schedule,
+                guidelines: parsedPlan.trainerGuidelines,
+                splitName: workoutData.splitName,
+                description: workoutData.description
 
             });
         }
@@ -98,8 +107,10 @@ const generatePlan = async (req,res) => {
             existingDietPlan.meals = dietData.meals;
 
             dietPlan = await existingDietPlan.save();
+
         } else {
             dietPlan = await DietPlan.create({
+
                 user: req.user.userId,
 
                 bmr: nutrition.bmr,
@@ -112,17 +123,22 @@ const generatePlan = async (req,res) => {
 
                 dailyTotals: dietData.dailyTotals,
                 meals: dietData.meals
+
             });
         }
 
         console.log("AI plan generated successfully");
 
         res.status(200).json({
+
             message: "AI plan generated successfully",
             workoutPlan,
             dietPlan
+
         });
+
     } catch (error) {
+
         console.error("AI plan generation error:",error);
 
         res.status(500).json({
