@@ -93,6 +93,11 @@ const workoutPlanSchema = new mongoose.Schema(
             min: 1,
             max: 7
         },
+        
+        profileUpdatedAt: {
+            type: Date,
+            required: true
+        },
 
         splitName: {
             type: String

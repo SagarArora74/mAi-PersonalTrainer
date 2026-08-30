@@ -79,6 +79,10 @@ const dietPlanSchema = new mongoose.Schema(
         meals: {
             type: [mealSchema],
             default: []
+        },
+        profileUpdatedAt: {
+            type: Date,
+            required:true
         }
     },
     {

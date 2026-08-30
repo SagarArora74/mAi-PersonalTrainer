@@ -32,14 +32,21 @@ const generatePlan = async (req,res) => {
         const existingDietPlan = await DietPlan.findOne({
             user:req.user.userId
         });
-
+        
         const regenerate = req.query.regenerate === "true";
 
-        if(existingWorkoutPlan && existingDietPlan && !regenerate) {
+        const plansAreCurrent = 
+        !regenerate &&
+        existingWorkoutPlan &&
+        existingDietPlan &&
+        existingWorkoutPlan.profileUpdatedAt?.getTime() === profile.updatedAt?.getTime() &&
+        existingDietPlan.profileUpdatedAt?.getTime() === profile.updatedAt?.getTime();
+
+        if (plansAreCurrent) {
             return res.status(200).json({
                 message: "AI plans already exist",
                 workoutPlan: existingWorkoutPlan,
-                dietPlan: existingDietPlan
+                dietPlan:existingDietPlan
             });
         }
 
@@ -84,6 +91,7 @@ const generatePlan = async (req,res) => {
             existingWorkoutPlan.goal = profile.goal;
             existingWorkoutPlan.experience = profile.experience;
             existingWorkoutPlan.daysPerWeek = profile.daysPerWeek;
+            existingWorkoutPlan.profileUpdatedAt = profile.updatedAt;
             existingWorkoutPlan.plan = workoutData.schedule;
             existingWorkoutPlan.splitName = workoutData.splitName;
             existingWorkoutPlan.description = workoutData.description;
@@ -98,6 +106,7 @@ const generatePlan = async (req,res) => {
                 goal: profile.goal,
                 experience: profile.experience,
                 daysPerWeek: profile.daysPerWeek,
+                profileUpdatedAt:profile.updatedAt,
                 plan: workoutData.schedule,
                 guidelines: parsedPlan.trainerGuidelines,
                 splitName: workoutData.splitName,
@@ -112,6 +121,7 @@ const generatePlan = async (req,res) => {
             existingDietPlan.tdee = nutrition.tdee;
             existingDietPlan.proteinGoal = nutrition.proteinGoal;
             existingDietPlan.calorieGoal = nutrition.calorieGoal;
+            existingDietPlan.profileUpdatedAt = profile.updatedAt;
             existingDietPlan.dietType = dietData.dietType;
             existingDietPlan.dailyTotals = dietData.dailyTotals;
             existingDietPlan.meals = dietData.meals;
@@ -128,6 +138,7 @@ const generatePlan = async (req,res) => {
 
                 proteinGoal: nutrition.proteinGoal,
                 calorieGoal: nutrition.calorieGoal,
+                profileUpdatedAt: profile.updatedAt,
 
                 dietType: dietData.dietType,
 

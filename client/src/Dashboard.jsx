@@ -1,8 +1,10 @@
 import { useEffect , useState } from "react";
 import { useAuth } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard () {
     const { token } = useAuth();
+    const navigate = useNavigate();
 
     const[profile, setProfile] = useState(null);
     const[dietPlan, setDietPlan] = useState(null);
@@ -167,6 +169,11 @@ function Dashboard () {
         <div>
             <h1> AI Personal Trainer </h1>
             <h2>Dashboard</h2>
+            <button 
+                onClick = {() => navigate("/profile")}
+            >
+                Edit Profile
+            </button>
             <h3>Your Profile</h3>
 
             <p>Age: {profile.age}</p>
@@ -193,9 +200,9 @@ function Dashboard () {
                         onClick={generatePlan}
                         disabled={generatingPlan}
                     >
-                        {generatePlan
-                            ? "Generating AI Plan..."
-                            : "Generate AI Plan"
+                        {generatingPlan
+                            ? "Generating Plan..."
+                            : "Generate Plan"
                         }
                     </button>
                 </div>
@@ -208,8 +215,8 @@ function Dashboard () {
                         disabled={regeneratingPlan}
                     >
                         {regeneratingPlan
-                            ? "Regenerating AI Plan..."
-                            : "Regenerate AI Plan"
+                            ? "Regenerating Plan..."
+                            : "Regenerate Plan"
                         }
                     </button>
                 </div>
@@ -234,11 +241,43 @@ function Dashboard () {
                     <p>
                         TDEE: {dietPlan.tdee} kcal
                     </p>
+
+                    <h3> Diet Plan</h3> 
+                    <p>
+                        Diet Type: {dietPlan.dietType}
+                    </p>
+
+                    {dietPlan.meals.map((meal) => (
+                        <div key={meal.mealName}>
+                            <h4>{meal.mealName}</h4>
+
+                            <p>
+                                Calories: {meal.calories} kcal
+                            </p>
+
+                            <p>
+                                Protein: {meal.proteinG} g
+                            </p>
+                            <ul>
+                                {meal.items.map((item,index)=> (
+                                    <li key={index}>
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
                 </div>
             )}
             {workoutPlan && (
                 <div>
                     <h3>Your Workout Plan</h3>
+                    {workoutPlan.splitName && (
+                        <h4>{workoutPlan.splitName}</h4>
+                    )}
+                    {workoutPlan.description && (
+                        <p>{workoutPlan.description}</p>
+                    )}
 
                     {workoutPlan.plan.map((day) => (
                         <div key={day.day}>
@@ -287,6 +326,20 @@ function Dashboard () {
                             )}
                         </div>
                     ))}
+                    {workoutPlan.guidelines && 
+                        workoutPlan.guidelines.length > 0 && (
+                            <div>
+                                <h4>Guidelines</h4>
+
+                                <ul>
+                                    {workoutPlan.guidelines.map((guideline,index)=> (
+                                        <li key={index}>
+                                            {guideline}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                 </div>
             )}
         </div>
