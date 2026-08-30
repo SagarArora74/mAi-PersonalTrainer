@@ -182,3 +182,247 @@
     border-right-color: var(--border);
   }
 }
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto 30px;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+}
+
+.dashboard-header p {
+    margin: 8px 0 0;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.profile-card {
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.profile-card span {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.profile-card strong {
+    display: inline-block;
+    font-size: 22px;
+    margin-right: 5px;
+}
+
+.profile-card small {
+    font-size: 14px;
+}
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.nutrition-card {
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.nutrition-card span {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.nutrition-card strong {
+    display: block;
+    font-size: 26px;
+    margin-bottom: 5px;
+}
+
+.nutrition-card small {
+    font-size: 13px;
+}
+
+.meal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.meal-card {
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.meal-card h4 {
+    margin-top: 0;
+    font-size: 20px;
+    text-align: center;
+}
+
+.meal-stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.meal-card ul {
+    padding-left: 20px;
+    text-align: right;
+}
+
+.meal-card li {
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.workout-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.rest-card {
+    grid-column: 1 / -1;
+}
+
+.workout-card {
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.workout-card h4 {
+    margin: 0 0 20px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.exercise {
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+}
+
+.exercise p {
+    margin: 6px 0;
+}
+
+.rest-day {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.workout-notes {
+    margin-top: 15px;
+    font-size: 14px;
+}
+.exercise-details {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 8px 0;
+}
+
+.exercise-details span {
+    padding: 5px 10px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .profile-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nutrition-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .meal-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .workout-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nutrition-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header {
+        align-items: stretch;
+    }
+
+    .exercise-details {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+.guidelines-section {
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+.guidelines-card {
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: left;
+}
+
+.guidelines-card ul {
+    margin: 0;
+    padding-left: 25px;
+}
+
+.guidelines-card li {
+    margin-bottom: 12px;
+}
+
+.guidelines-card li:last-child {
+    margin-bottom: 0;
+}

@@ -191,13 +191,18 @@ function Dashboard () {
 
     return (
         <div>
-            <h1> AI Personal Trainer </h1>
+            <div className="dashboard-header">
+                <div>
+                    <h1>AI Personal Trainer</h1>
+                    <p>Your personalized fitness dashboard</p>
+                </div>
+
+                <button onClick={() => navigate("/profile")}>
+                    Edit Profile
+                </button>
+            </div>
+
             <h2>Dashboard</h2>
-            <button 
-                onClick = {() => navigate("/profile")}
-            >
-                Edit Profile
-            </button>
 
             {planStatus?.isOutdated && (
                 <div>
@@ -210,17 +215,58 @@ function Dashboard () {
             )}
             <h3>Your Profile</h3>
 
-            <p>Age: {profile.age}</p>
-            <p>Gender: {profile.gender}</p>
-            <p>Height: {profile.height} cm</p>
-            <p>Weight: {profile.weight} kg</p>
-            <p>Goal: {profile.goal}</p>
-            <p>
-                Activity: {profile.daily_physical_activity}
-            </p>
-            <p>Experience: {profile.experience}</p>
-            <p>Diet: {profile.diet}</p>
-            <p>Days per week: {profile.daysPerWeek}</p>
+            <div className="profile-grid">
+
+            <div className="profile-card">
+                <span>Age</span>
+                <strong>{profile.age}</strong>
+                <small>years</small>
+            </div>
+                
+            <div className="profile-card">
+                <span>Gender</span>
+                <strong>{profile.gender}</strong>
+            </div>
+                
+            <div className="profile-card">
+                <span>Height</span>
+                <strong>{profile.height}</strong>
+                <small>cm</small>
+            </div>
+                
+            <div className="profile-card">
+                <span>Weight</span>
+                <strong>{profile.weight}</strong>
+                <small>kg</small>
+            </div>
+                
+            <div className="profile-card">
+                <span>Goal</span>
+                <strong>{profile.goal}</strong>
+            </div>
+                
+            <div className="profile-card">
+                <span>Activity</span>
+                <strong>{profile.daily_physical_activity}</strong>
+            </div>
+                
+            <div className="profile-card">
+                <span>Experience</span>
+                <strong>{profile.experience}</strong>
+            </div>
+                
+            <div className="profile-card">
+                <span>Diet</span>
+                <strong>{profile.diet}</strong>
+            </div>
+                
+            <div className="profile-card">
+                <span>Training Days</span>
+                <strong>{profile.daysPerWeek}</strong>
+                <small>days / week</small>
+            </div>
+                
+        </div>
 
             {(!dietPlan || !workoutPlan) && (
                 <div>
@@ -260,47 +306,56 @@ function Dashboard () {
                 <div>
                     <h3>Daily Nutrition</h3>
 
-                    <p>
-                        Calorie Goal: {dietPlan.calorieGoal} kcal/day
-                    </p>
+                    <div className="nutrition-grid">
 
-                    <p>
-                        Protein Goal: {dietPlan.proteinGoal} g/day
-                    </p>
-
-                    <p>
-                        BMR: {dietPlan.bmr} kcal
-                    </p>
-
-                    <p>
-                        TDEE: {dietPlan.tdee} kcal
-                    </p>
-
-                    <h3> Diet Plan</h3> 
-                    <p>
-                        Diet Type: {dietPlan.dietType}
-                    </p>
-
-                    {dietPlan.meals.map((meal) => (
-                        <div key={meal.mealName}>
-                            <h4>{meal.mealName}</h4>
-
-                            <p>
-                                Calories: {meal.calories} kcal
-                            </p>
-
-                            <p>
-                                Protein: {meal.proteinG} g
-                            </p>
-                            <ul>
-                                {meal.items.map((item,index)=> (
-                                    <li key={index}>
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
+                        <div className="nutrition-card">
+                            <span>Calorie Goal</span>
+                            <strong>{dietPlan.calorieGoal}</strong>
+                            <small>kcal / day</small>
                         </div>
-                    ))}
+
+                        <div className="nutrition-card">
+                            <span>Protein Goal</span>
+                            <strong>{dietPlan.proteinGoal}</strong>
+                            <small>g / day</small>
+                        </div>
+
+                        <div className="nutrition-card">
+                            <span>BMR</span>
+                            <strong>{dietPlan.bmr}</strong>
+                            <small>kcal / day</small>
+                        </div>
+
+                        <div className="nutrition-card">
+                            <span>TDEE</span>
+                            <strong>{dietPlan.tdee}</strong>
+                            <small>kcal / day</small>
+                        </div>
+
+                    </div>
+
+                    <div className="meal-grid">
+                        {dietPlan.meals.map((meal) => (
+                            <div className="meal-card" key={meal.mealName}>
+                            
+                                <h4>{meal.mealName}</h4>
+                        
+                                <div className="meal-stats">
+                                    <span>{meal.calories} kcal</span>
+                                    <span>{meal.proteinG} g protein</span>
+                                </div>
+                        
+                                <ul>
+                                    {meal.items.map((item, index) => (
+                                        <li key={index}>
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                                
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )}
             {workoutPlan && (
@@ -313,67 +368,99 @@ function Dashboard () {
                         <p>{workoutPlan.description}</p>
                     )}
 
-                    {workoutPlan.plan.map((day) => (
-                        <div key={day.day}>
-                            <h4>
-                                {day.day} - {day.focus}
-                            </h4>
+                    <div className="workout-grid">
+                        {workoutPlan.plan.map((day) => (
+                            <div
+                                className={
+                                    day.exercises.length === 0
+                                        ? "workout-card rest-card"
+                                        : "workout-card"
+                                }
+                                key={day.day}
+                            >
+                            
+                                <h4>
+                                    {day.day} - {day.focus}
+                                </h4>
+                        
+                                {day.exercises.length === 0 ? (
+                                    <p className="rest-day">
+                                        {day.notes}
+                                    </p>
+                                ) : (
+                                    <div className="exercise-list">
+                                    
+                                        {day.exercises.map((exercise, index) => (
+                                            <div className="exercise" key={index}>
+                                            
+                                                <p>
+                                                    <strong>{exercise.name}</strong>
+                                                </p>
+                                        
+                                                <div className="exercise-details">
 
-                            {day.exercises.length === 0 ? (
-                                <p>{day.notes}</p>
-                            ) : (
-                                day.exercises.map((exercise, index) => (
-                                    <div key={index}>
-                                        <p>
-                                            <strong>{exercise.name}</strong>
-                                        </p>
-                                
-                                        <p>
-                                            Sets: {exercise.sets} | Reps: {exercise.reps}
-                                        </p>
-                                
-                                        {exercise.restPeriod && (
-                                            <p>
-                                                Rest: {exercise.restPeriod}
-                                            </p>
-                                        )}
-
-                                        {exercise.duration && (
-                                            <p>
-                                                Duration: {exercise.duration}
-                                            </p>
-                                        )}
-
-                                        {exercise.intensity && (
-                                            <p>
-                                                Intensity: {exercise.intensity}
-                                            </p>
-                                        )}
+                                                    {exercise.sets && (
+                                                        <span>
+                                                            {exercise.sets} Sets
+                                                        </span>
+                                                    )}
+                                                
+                                                    {exercise.reps && (
+                                                        <span>
+                                                            {exercise.reps} Reps
+                                                        </span>
+                                                    )}
+                                                
+                                                    {exercise.restPeriod && (
+                                                        <span>
+                                                            Rest: {exercise.restPeriod}
+                                                        </span>
+                                                    )}
+                                                
+                                                </div>
+                    
+                                                {exercise.duration && (
+                                                    <p>
+                                                        Duration: {exercise.duration}
+                                                    </p>
+                                                )}
+                    
+                                                {exercise.intensity && (
+                                                    <p>
+                                                        Intensity: {exercise.intensity}
+                                                    </p>
+                                                )}
+                    
+                                            </div>
+                                        ))}
+                    
                                     </div>
-                                ))
-                            )}
-
-                            {day.notes && (
-                                <p>
-                                    <strong>Notes:</strong> {day.notes}
-                                </p>
-                            )}
-                        </div>
-                    ))}
-                    {workoutPlan.guidelines && 
-                        workoutPlan.guidelines.length > 0 && (
-                            <div>
-                                <h4>Guidelines</h4>
-
+                                )}
+                    
+                                {day.notes && day.exercises.length > 0 && (
+                                    <p className="workout-notes">
+                                        <strong>Notes:</strong> {day.notes}
+                                    </p>
+                                )}
+                    
+                            </div>
+                        ))}
+                    </div>
+                    {workoutPlan && workoutPlan.guidelines && (
+                        <div className="guidelines-section">
+                            <h3>Workout Guidelines</h3>
+                                        
+                            <div className="guidelines-card">
                                 <ul>
-                                    {workoutPlan.guidelines.map((guideline,index)=> (
+                                    {workoutPlan.guidelines.map((guideline, index) => (
                                         <li key={index}>
                                             {guideline}
                                         </li>
                                     ))}
                                 </ul>
                             </div>
-                        )}
+                        </div>
+                    )}
                 </div>
             )}
         </div>
