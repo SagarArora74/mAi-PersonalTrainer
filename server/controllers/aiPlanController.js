@@ -168,6 +168,50 @@ const generatePlan = async (req,res) => {
     }
 };
 
+const getPlanStatus = async (req,res) => {
+    try {
+        const profile = await Profile.findOne({
+            user: req.user.userId
+        });
+
+        if(!profile) {
+            return res.status(404).json({
+                message: "Profile not found"
+            });
+        }
+        const workoutPlan = await WorkoutPlan.findOne({
+            user: req.user.userId
+        });
+
+        const dietPlan = await WorkoutPlan.findOne({
+            user:req.user.userId
+        });
+
+        if(!workoutPlan || !dietPlan) {
+            return res.status(200).json({
+                hasPlans: false,
+                isOutdated: false
+            });
+        }
+
+        const isOutdated = 
+            workoutPlan.profileUpdatedAt?.getTime() !== profile.updatedAt?.getTime() ||
+            dietPlan.profileUpdatedAt?.getTime() !== profile.updatedAt?.getTime();
+
+        res.status(200).json({
+            hasPlans: true,
+            isOutdated
+        });
+    } catch (error) {
+        console.error("Plan status error: ", error);
+
+        res.status(500).json({
+            message: "Failed to check plan status"
+        });
+    }
+};
+
 module.exports = {
-    generatePlan
+    generatePlan,
+    getPlanStatus
 };

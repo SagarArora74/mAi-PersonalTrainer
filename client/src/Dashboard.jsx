@@ -9,6 +9,7 @@ function Dashboard () {
     const[profile, setProfile] = useState(null);
     const[dietPlan, setDietPlan] = useState(null);
     const[workoutPlan, setWorkoutPlan] = useState(null);
+    const[planStatus, setPlanStatus] = useState(null);
 
     const[loading,setLoading] = useState(true);
     const[message,setMessage] = useState("");
@@ -42,6 +43,10 @@ function Dashboard () {
 
             setWorkoutPlan(data.workoutPlan);
             setDietPlan(data.dietPlan);
+            setPlanStatus({
+                hasPlans: true,
+                isOutDated: false
+            });
 
             setMessage("AI plan generated successfully");
         } catch (error) {
@@ -78,6 +83,11 @@ function Dashboard () {
 
             setWorkoutPlan(data.workoutPlan);
             setDietPlan(data.dietPlan);
+
+            setPlanStatus({
+                hasPlans: true,
+                isOutDated: false
+            });
 
             setMessage("AI plan regenerated successfully");
 
@@ -117,6 +127,20 @@ function Dashboard () {
                             }
                         })
                     ]);
+                const statusResponse = await fetch(
+                    "http://localhost:5000/api/ai-plan/status",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+                const statusData = await statusResponse.json();
+
+                if(statusResponse.ok) {
+                    setPlanStatus(statusData);
+                }
                 
                 const profileData = await profileResponse.json();
                 const dietData = await dietResponse.json();
@@ -174,6 +198,16 @@ function Dashboard () {
             >
                 Edit Profile
             </button>
+
+            {planStatus?.isOutdated && (
+                <div>
+                    <p>
+                        Your profile has changed since your AI plan was generated.
+                        Please regenerate your Plan to reflect your latest profile.
+                    </p>
+
+                </div>
+            )}
             <h3>Your Profile</h3>
 
             <p>Age: {profile.age}</p>
@@ -193,7 +227,7 @@ function Dashboard () {
                     <h3>Your AI Plan</h3>
 
                     <p>
-                        You don't have an AI plan yer. Generate one based on your profile.
+                        You don't have an AI plan yet. Generate one based on your profile.
                     </p>
 
                     <button 
