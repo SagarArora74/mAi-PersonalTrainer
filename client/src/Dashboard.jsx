@@ -191,17 +191,19 @@ function Dashboard () {
 
     return (
         <div>
-            <div className="dashboard-header">
-                <div>
-                    <h1>AI Personal Trainer</h1>
-                    <p>Your personalized fitness dashboard</p>
+            <div className ="dashboard-container">
+                <div className="dashboard-header">
+                    <div>
+                        <h1>AI Personal Trainer</h1>
+                        <p>Your personalized fitness dashboard</p>
+                    </div>
+
+                    <button onClick={() => navigate("/profile")}>
+                        Edit Profile
+                    </button>
                 </div>
-
-                <button onClick={() => navigate("/profile")}>
-                    Edit Profile
-                </button>
             </div>
-
+            
             <h2>Dashboard</h2>
 
             {planStatus?.isOutdated && (
@@ -449,7 +451,7 @@ function Dashboard () {
                     {workoutPlan && workoutPlan.guidelines && (
                         <div className="guidelines-section">
                             <h3>Workout Guidelines</h3>
-                                        
+
                             <div className="guidelines-card">
                                 <ul>
                                     {workoutPlan.guidelines.map((guideline, index) => (

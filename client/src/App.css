@@ -426,3 +426,7 @@
 .guidelines-card li:last-child {
     margin-bottom: 0;
 }
+
+.dashboard-container {
+    padding-top: 40px;
+}
