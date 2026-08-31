@@ -2,6 +2,11 @@ import { useEffect , useState } from "react";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "./api";
+import fitnessHero from "./assets/fitness-hero.jpg";
+import nutritionHero from "./assets/nutrition-hero.jpg";
+import mealHero from "./assets/meal-hero.jpg";
+import workoutBackground from "./assets/workout-background.jpg";
+import guidelinesBackground from "./assets/guidelines-background.png";
 
 function Dashboard () {
     const { token, logout } = useAuth();
@@ -11,6 +16,8 @@ function Dashboard () {
     const[dietPlan, setDietPlan] = useState(null);
     const[workoutPlan, setWorkoutPlan] = useState(null);
     const[planStatus, setPlanStatus] = useState(null);
+
+    const[selectedDay, setSelectedDay]= useState(0);
 
     const[loading,setLoading] = useState(true);
     const[message,setMessage] = useState("");
@@ -192,14 +199,25 @@ function Dashboard () {
 
     return (
         <div>
-            <div className ="dashboard-container">
+            <div
+                className="dashboard-container"
+                style={{ backgroundImage: `url(${fitnessHero})` }}
+            >
                 <div className="dashboard-header">
-                    <div>
+                    <div className="dashboard-header-content">
+                        <span className="dashboard-label">AI FITNESS ASSISTANT</span>
+
                         <h1>mAI Personal Trainer</h1>
-                        <p>Your personalized fitness dashboard</p>
+
+                        <p>
+                            Your personalized fitness dashboard
+                        </p>
                     </div>
 
-                    <button onClick={() => navigate("/profile")}>
+                    <button
+                        className="dashboard-button"
+                        onClick={() => navigate("/profile")}
+                    >
                         Edit Profile
                     </button>
                 </div>
@@ -211,6 +229,8 @@ function Dashboard () {
                 <div>
                     <p>
                         Your profile has changed since your AI plan was generated.
+                    </p>
+                    <p>
                         Please regenerate your Plan to reflect your latest profile.
                     </p>
 
@@ -280,6 +300,7 @@ function Dashboard () {
                     </p>
 
                     <button 
+                        className="dashboard-button"
                         onClick={generatePlan}
                         disabled={generatingPlan}
                     >
@@ -294,6 +315,7 @@ function Dashboard () {
             {dietPlan && workoutPlan && (
                 <div>
                     <button
+                        className="dashboard-button"
                         onClick={regeneratePlan}
                         disabled={regeneratingPlan}
                     >
@@ -306,9 +328,25 @@ function Dashboard () {
             )}
 
             {dietPlan && (
-                <div>
-                    <h3>Daily Nutrition</h3>
-
+                <div className="nutrition-section">
+                
+                    <div
+                        className="nutrition-hero"
+                        style={{ backgroundImage: `url(${nutritionHero})` }}
+                    >
+                        <div className="nutrition-hero-content">
+                            <span className="nutrition-label">
+                                DAILY NUTRITION
+                            </span>
+                        
+                            <h3>Fuel Your Progress</h3>
+                        
+                            <p>
+                                Your personalized nutrition targets based on your fitness profile.
+                            </p>
+                        </div>
+                    </div>
+                        
                     <div className="nutrition-grid">
 
                         <div className="nutrition-card">
@@ -337,6 +375,23 @@ function Dashboard () {
 
                     </div>
 
+                    <div
+                        className="meal-hero"
+                        style={{ backgroundImage: `url(${mealHero})` }}
+                    >
+                        <div className="meal-hero-content">
+                            <span className="meal-label">
+                                PERSONALIZED MEALS
+                            </span>
+
+                            <h3>Your Daily Meals</h3>
+
+                            <p>
+                                Simple meals designed around your calorie and protein goals.
+                            </p>
+                        </div>
+                    </div>
+
                     <div className="meal-grid">
                         {dietPlan.meals.map((meal) => (
                             <div className="meal-card" key={meal.mealName}>
@@ -362,7 +417,8 @@ function Dashboard () {
                 </div>
             )}
             {workoutPlan && (
-                <div>
+                <div className="workout-section">
+
                     <h3>Your Workout Plan</h3>
                     {workoutPlan.splitName && (
                         <h4>{workoutPlan.splitName}</h4>
@@ -371,86 +427,113 @@ function Dashboard () {
                         <p>{workoutPlan.description}</p>
                     )}
 
-                    <div className="workout-grid">
-                        {workoutPlan.plan.map((day) => (
-                            <div
-                                className={
-                                    day.exercises.length === 0
-                                        ? "workout-card rest-card"
-                                        : "workout-card"
-                                }
-                                key={day.day}
-                            >
-                            
-                                <h4>
-                                    {day.day} - {day.focus}
-                                </h4>
-                        
-                                {day.exercises.length === 0 ? (
-                                    <p className="rest-day">
-                                        {day.notes}
-                                    </p>
-                                ) : (
-                                    <div className="exercise-list">
-                                    
-                                        {day.exercises.map((exercise, index) => (
-                                            <div className="exercise" key={index}>
-                                            
-                                                <p>
-                                                    <strong>{exercise.name}</strong>
-                                                </p>
-                                        
-                                                <div className="exercise-details">
+                    <div className="weekly-calendar"
+                    style={{
+                        backgroundImage: `url(${workoutBackground})`
+                    }}>
 
-                                                    {exercise.sets && (
-                                                        <span>
-                                                            {exercise.sets} Sets
-                                                        </span>
-                                                    )}
+                        <div className="calendar-days">
+                            {workoutPlan.plan.map((day, index) => (
+                                <button
+                                    key={day.day}
+                                    className={
+                                        selectedDay === index
+                                            ? "calendar-day active"
+                                            : "calendar-day"
+                                    }
+                                    onClick={() => setSelectedDay(index)}
+                                >
+                                    <strong>{day.day}</strong>
+                                    <span>{day.focus}</span>
+                                </button>
+                            ))}
+                        </div>
+                        
+                        <div className="selected-workout">
+                            {(() => {
+                                const day = workoutPlan.plan[selectedDay];
+                            
+                                return (
+                                    <>
+                                        <h4>
+                                            {day.day} - {day.focus}
+                                        </h4>
+                                
+                                        {day.exercises.length === 0 ? (
+                                            <p className="rest-day">
+                                                {day.notes}
+                                            </p>
+                                        ) : (
+                                            <div className="exercise-list">
+                                                {day.exercises.map((exercise, index) => (
+                                                    <div
+                                                        className="exercise"
+                                                        key={index}
+                                                    >
+                                                        <p>
+                                                            <strong>
+                                                                {exercise.name}
+                                                            </strong>
+                                                        </p>
                                                 
-                                                    {exercise.reps && (
-                                                        <span>
-                                                            {exercise.reps} Reps
-                                                        </span>
-                                                    )}
+                                                        <div className="exercise-details">
                                                 
-                                                    {exercise.restPeriod && (
-                                                        <span>
-                                                            Rest: {exercise.restPeriod}
-                                                        </span>
-                                                    )}
-                                                
-                                                </div>
-                    
-                                                {exercise.duration && (
-                                                    <p>
-                                                        Duration: {exercise.duration}
-                                                    </p>
-                                                )}
-                    
-                                                {exercise.intensity && (
-                                                    <p>
-                                                        Intensity: {exercise.intensity}
-                                                    </p>
-                                                )}
-                    
+                                                            {exercise.sets && (
+                                                                <span>
+                                                                    {exercise.sets} Sets
+                                                                </span>
+                                                            )}
+
+                                                            {exercise.reps && (
+                                                                <span>
+                                                                    {exercise.reps} Reps
+                                                                </span>
+                                                            )}
+
+                                                            {exercise.restPeriod && (
+                                                                <span>
+                                                                    Rest: {exercise.restPeriod}
+                                                                </span>
+                                                            )}
+
+                                                        </div>
+                                                        
+                                                        {exercise.duration && (
+                                                            <p>
+                                                                Duration: {exercise.duration}
+                                                            </p>
+                                                        )}
+
+                                                        {exercise.intensity && (
+                                                            <p>
+                                                                Intensity: {exercise.intensity}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                ))}
                                             </div>
-                                        ))}
-                    
-                                    </div>
-                                )}
-                    
-                                {day.notes && day.exercises.length > 0 && (
-                                    <p className="workout-notes">
-                                        <strong>Notes:</strong> {day.notes}
-                                    </p>
-                                )}
-                    
-                            </div>
-                        ))}
+                                        )}
+
+                                        {day.notes && day.exercises.length > 0 && (
+                                            <p className="workout-notes">
+                                                <strong>Notes:</strong> {day.notes}
+                                            </p>
+                                        )}
+                                    </>
+                                );
+                            })()}
+                        </div>
+                        
                     </div>
+
+
                     {workoutPlan && workoutPlan.guidelines && (
-                        <div className="guidelines-section">
+                        <div
+                            className="guidelines-card"
+                            style={{
+                                backgroundImage: `url(${guidelinesBackground})`
+                            }}
+                        >
                             <h3>Workout Guidelines</h3>
 
                             <div className="guidelines-card">

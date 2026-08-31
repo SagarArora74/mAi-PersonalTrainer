@@ -302,62 +302,7 @@
     text-align: left;
 }
 
-.workout-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    max-width: 1000px;
-    margin: 20px auto;
-}
 
-.rest-card {
-    grid-column: 1 / -1;
-}
-
-.workout-card {
-    padding: 20px;
-    border: 1px solid #333;
-    border-radius: 10px;
-    text-align: left;
-}
-
-.workout-card h4 {
-    margin: 0 0 20px;
-    text-align: center;
-    font-size: 20px;
-}
-
-.exercise {
-    padding: 12px 0;
-    border-bottom: 1px solid #333;
-}
-
-.exercise p {
-    margin: 6px 0;
-}
-
-.rest-day {
-    text-align: center;
-    padding: 20px 0;
-}
-
-.workout-notes {
-    margin-top: 15px;
-    font-size: 14px;
-}
-.exercise-details {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin: 8px 0;
-}
-
-.exercise-details span {
-    padding: 5px 10px;
-    border: 1px solid #333;
-    border-radius: 6px;
-    font-size: 13px;
-}
 
 @media (max-width: 768px) {
 
@@ -389,6 +334,10 @@
 
     .profile-actions {
         flex-wrap: wrap;
+    }
+
+    .calendar-days {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -422,6 +371,14 @@
     .profile-actions button {
         width: 100%;
     }
+
+    .calendar-days {
+        grid-template-columns: 1fr;
+    }
+
+    .selected-workout {
+        padding: 18px;
+    }
 }
 
 .guidelines-section {
@@ -430,10 +387,34 @@
 }
 
 .guidelines-card {
-    border: 1px solid #333;
-    border-radius: 10px;
-    padding: 20px;
+    position: relative;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    border-radius: 16px;
+
+    padding: 30px;
+
     text-align: left;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+}
+
+.guidelines-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: rgba(8, 10, 15, 0.58);
+}
+
+.guidelines-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .guidelines-card ul {
@@ -450,7 +431,65 @@
 }
 
 .dashboard-container {
-    padding-top: 40px;
+    position: relative;
+    min-height: 260px;
+    margin-bottom: 35px;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.dashboard-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        90deg,
+        rgba(10, 12, 18, 0.95),
+        rgba(10, 12, 18, 0.65),
+        rgba(10, 12, 18, 0.25)
+    );
+}
+
+.dashboard-header {
+    position: relative;
+    z-index: 1;
+
+    min-height: 260px;
+    padding: 40px 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.dashboard-header-content {
+    max-width: 600px;
+}
+
+.dashboard-label {
+    display: block;
+    margin-bottom: 12px;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.dashboard-header h1 {
+    margin: 0 0 14px;
+    font-size: 42px;
+}
+
+.dashboard-header p {
+    margin: 0;
+    font-size: 17px;
 }
 
 .profile-page {
@@ -573,22 +612,44 @@
 
 .auth-page {
     min-height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     padding: 30px;
     box-sizing: border-box;
+
+    background-image:
+        linear-gradient(
+            rgba(8, 10, 15, 0.45),
+            rgba(8, 10, 15, 0.45)
+        ),
+        url("./assets/auth-background.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .auth-card {
     width: 100%;
     max-width: 420px;
-    padding: 35px;
-    border: 1px solid #333;
-    border-radius: 10px;
-    box-sizing: border-box;
-}
 
+    padding: 35px;
+
+    box-sizing: border-box;
+
+    background: rgba(18, 20, 27, 0.65);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
 .auth-card h2 {
     text-align: center;
     margin: 0 0 30px;
@@ -642,4 +703,338 @@
     text-align: center;
     margin: 20px 0 0;
 }
+/* weekly calender*/
 
+.weekly-calendar {
+    margin-top: 25px;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.calendar-day {
+    min-height: 70px;
+    padding: 10px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    border: 1px solid #333;
+    border-radius: 8px;
+
+    background: transparent;
+    cursor: pointer;
+    background: rgba(18, 21, 29, 0.75);
+    
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    
+}
+
+.calendar-day strong {
+    font-size: 15px;
+}
+
+.calendar-day span {
+    font-size: 13px;
+    text-align: center;
+}
+
+.calendar-day:hover {
+    transform: translateY(-2px);
+}
+
+.calendar-day.active {
+    border-width: 2px;
+    background: rgba(100, 100, 110, 0.85);
+}
+
+.selected-workout {
+    margin-top: 20px;
+    padding: 24px 28px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    text-align: left;
+    
+}
+
+.selected-workout h4 {
+    margin: 0 0 24px;
+    text-align: center;
+}
+
+.selected-workout .exercise-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.selected-workout .exercise {
+    padding: 18px 0;
+    border-bottom: 1px solid #333;
+    text-align: left;
+}
+
+.selected-workout .exercise:first-child {
+    padding-top: 0;
+}
+
+.selected-workout .exercise:last-child {
+    border-bottom: none;
+}
+
+.selected-workout .exercise p {
+    margin: 0 0 12px;
+    text-align: left;
+}
+
+.selected-workout .exercise p strong {
+    font-size: 18px;
+}
+
+.selected-workout .exercise-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.selected-workout .exercise-details span {
+    padding: 7px 11px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.selected-workout .rest-day {
+    margin: 0;
+    text-align: center;
+}
+
+/* dashboard buttons*/
+
+.dashboard-button {
+    padding: 11px 22px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    margin-top: 5px;
+
+    background: #24252c;
+    color: #a9bdd8;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dashboard-button:hover {
+    background: #30323a;
+    border-color: #666;
+    transform: translateY(-1px);
+}
+
+.dashboard-button:active {
+    transform: translateY(0);
+}
+
+.dashboard-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* nutrition hero*/
+
+.nutrition-section {
+    margin-top: 40px;
+}
+
+.nutrition-hero {
+    position: relative;
+    min-height: 190px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 30px 40px;
+
+    background-size: cover;
+    background-position: center;
+
+    border-radius: 14px;
+    overflow: hidden;
+
+    margin-bottom: 20px;
+}
+
+.nutrition-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        90deg,
+        rgba(10, 12, 18, 0.95),
+        rgba(10, 12, 18, 0.70),
+        rgba(10, 12, 18, 0.30)
+    );
+}
+
+.nutrition-hero-content {
+    position: relative;
+    z-index: 1;
+
+    max-width: 550px;
+}
+
+.nutrition-label {
+    display: block;
+    margin-bottom: 10px;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.nutrition-hero h3 {
+    margin: 0 0 10px;
+    font-size: 30px;
+}
+
+.nutrition-hero p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* meal hero*/
+
+.meal-hero {
+    position: relative;
+    min-height: 170px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 25px 35px;
+    margin: 30px 0 20px;
+
+    background-size: cover;
+    background-position: center;
+
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.meal-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        90deg,
+        rgba(10, 12, 18, 0.95),
+        rgba(10, 12, 18, 0.68),
+        rgba(10, 12, 18, 0.25)
+    );
+}
+
+.meal-hero-content {
+    position: relative;
+    z-index: 1;
+
+    max-width: 550px;
+}
+
+.meal-label {
+    display: block;
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.meal-hero h3 {
+    margin: 0 0 8px;
+    font-size: 28px;
+}
+
+.meal-hero p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+body {
+    background: #0b0d12;
+}
+
+.dashboard-container,
+.nutrition-hero,
+.meal-hero {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Login page text */
+.auth-content {
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-intro {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.auth-intro h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+}
+
+.auth-intro p {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+    opacity: 0.8;
+}
+
+/*workout calender*/
+.weekly-calendar {
+    position: relative;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border-radius: 16px;
+    overflow: hidden;
+
+    padding: 30px;
+}
+
+/* Dark overlay over the image */
+.weekly-calendar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: rgba(8, 10, 15, 0.60);
+}
+
+/* Keep calendar content above the image */
+.weekly-calendar > * {
+    position: relative;
+    z-index: 1;
+}

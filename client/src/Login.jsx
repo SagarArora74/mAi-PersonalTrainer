@@ -55,51 +55,58 @@ function Login() {
     };
     return (
     <div className="auth-page">
-        <div className="auth-card">
+        <div className="auth-content">
+            <div className="auth-intro">
+                <h1>Welcome back</h1>
+                <p>Your journey to a stronger, healthier you starts here.</p>
+            </div>
 
-            <h2>Login</h2>
+            <div className="auth-card">
 
-            <form className="auth-form" onSubmit={handleSubmit}>
+                <h2>Login</h2>
+        
+                <form className="auth-form" onSubmit={handleSubmit}>
+        
+                    <div className="auth-field">
+                        <label>Email:</label>
+                        <input 
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+        
+                    <div className="auth-field">
+                        <label>Password:</label>
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+        
+                    <button type="submit">
+                        Login
+                    </button>
+        
+                    <p className="auth-link">
+                        Don't have an account?{" "}
+                        <Link to="/register">Register</Link>
+                    </p>
+        
+                </form>
+        
+                {message && (
+                    <p className="auth-message">
+                        {message}
+                    </p>
+                )}
 
-                <div className="auth-field">
-                    <label>Email:</label>
-                    <input 
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="auth-field">
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <button type="submit">
-                    Login
-                </button>
-
-                <p className="auth-link">
-                    Don't have an account?{" "}
-                    <Link to="/register">Register</Link>
-                </p>
-
-            </form>
-
-            {message && (
-                <p className="auth-message">
-                    {message}
-                </p>
-            )}
-
+            </div>
         </div>
     </div>
 );
