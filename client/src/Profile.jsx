@@ -18,7 +18,6 @@ function Profile() {
     const [existingProfile, setExistingProfile] = useState(null);
     const [loading, setLoading] = useState(true)
     const [isEditing, setIsEditing] = useState(false);
-    const [profileCreated, setProfileCreated] = useState(false);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -88,7 +87,9 @@ function Profile() {
 
             if(response.ok) {
                 setMessage(data.message);
-                setProfileCreated(true);
+                setTimeout(() => {
+                    navigate("/dashboard");
+                },1000);
             } else {
                 setMessage(data.message || "Profile creation failed");
             }
@@ -163,45 +164,91 @@ function Profile() {
 
     if (existingProfile && !isEditing) {
         return (
-            <div>
-                <h2>Your Profile</h2>
+    <div className="existing-profile">
 
-                <p>Age: {existingProfile.age}</p>
-                <p>Gender: {existingProfile.gender}</p>
-                <p>Height: {existingProfile.height}</p>
-                <p>Weight: {existingProfile.weight}</p>
-                <p>Goal: {existingProfile.goal}</p>
-                <p>Activity: {existingProfile.daily_physical_activity}</p>
-                <p>Experience: {existingProfile.experience}</p>
-                <p>Diet: {existingProfile.diet}</p>
-                <p>Days per week: {existingProfile.daysPerWeek}</p>
+        <h2>Your Profile</h2>
 
-                <button onClick={handleEdit}>
-                    Edit Profile
-                </button>
-                <button onClick = {() => navigate("/dashboard")}>
-                    Dashboard
-                </button>
-                <button onClick={handleLogout}>
-                    Logout
-                </button>
-                {message && <p>{message} </p>}
-                {profileCreated && (
-                    <button onClick = {() => navigate("/dashboard")}>
-                        Go to Dashboard
-                    </button>
-                )}
+        <div className="profile-details">
+
+            <div className="profile-detail">
+                <span>Age</span>
+                <strong>{existingProfile.age}</strong>
             </div>
-        );
+
+            <div className="profile-detail">
+                <span>Gender</span>
+                <strong>{existingProfile.gender}</strong>
+            </div>
+
+            <div className="profile-detail">
+                <span>Height</span>
+                <strong>{existingProfile.height} cm</strong>
+            </div>
+
+            <div className="profile-detail">
+                <span>Weight</span>
+                <strong>{existingProfile.weight} kg</strong>
+            </div>
+
+            <div className="profile-detail">
+                <span>Goal</span>
+                <strong>{existingProfile.goal}</strong>
+            </div>
+
+            <div className="profile-detail">
+                <span>Activity</span>
+                <strong>{existingProfile.daily_physical_activity}</strong>
+            </div>
+
+            <div className="profile-detail">
+                <span>Experience</span>
+                <strong>{existingProfile.experience}</strong>
+            </div>
+
+            <div className="profile-detail">
+                <span>Diet</span>
+                <strong>{existingProfile.diet}</strong>
+            </div>
+
+            <div className="profile-detail">
+                <span>Training Days</span>
+                <strong>{existingProfile.daysPerWeek} days / week</strong>
+            </div>
+
+        </div>
+
+        <div className="profile-actions">
+
+            <button onClick={handleEdit}>
+                Edit Profile
+            </button>
+
+            <button onClick={() => navigate("/dashboard")}>
+                Dashboard
+            </button>
+
+            <button onClick={handleLogout}>
+                Logout
+            </button>
+
+        </div>
+
+        {message && <p className="profile-message">{message}</p>}
+
+    </div>
+);
     }
 
     return (
-        <div>
-            <h2>Create Profile</h2>
+        <div className="profile-page">
+            <h2>{isEditing ? "Edit Profile" : "Create Profile"}</h2>
 
-            <form onSubmit={isEditing ? handleUpdate : handleSubmit}>
+            <form
+                className="profile-form"
+                onSubmit={isEditing ? handleUpdate : handleSubmit}
+            >
 
-                <div>
+                <div className="profile-field">
                     <label>Age:</label>
                     <input
                         type="number"
@@ -212,7 +259,7 @@ function Profile() {
                     />
                 </div>
 
-                <div>
+                <div className="profile-field">
                     <label>Gender:</label>
                     <select
                         name = "gender"
@@ -226,7 +273,7 @@ function Profile() {
                     </select>
                 </div>
 
-                <div>
+                <div className="profile-field">
                     <label>Height:</label>
                     <input
                         type="number"
@@ -237,7 +284,7 @@ function Profile() {
                     />
                 </div>
 
-                <div>
+                <div className="profile-field">
                     <label>Weight:</label>
                     <input
                         type="number"
@@ -248,7 +295,7 @@ function Profile() {
                     />
                 </div>
 
-                <div>
+                <div className="profile-field">
                     <label>Goal:</label>
                     <select
                         name="goal"
@@ -263,7 +310,7 @@ function Profile() {
                     </select>
                 </div>
 
-                <div>
+                <div className="profile-field">
                     <label>Daily Physical Activity:</label>
                     <select
                         name="daily_physical_activity"
@@ -278,7 +325,7 @@ function Profile() {
                     </select>
                 </div>
 
-                <div>
+                <div className="profile-field">
                     <label>Experience:</label>
                     <select
                         name="experience"
@@ -293,7 +340,7 @@ function Profile() {
                     </select>
                 </div>
 
-                <div>
+                <div className="profile-field">
                     <label>Diet:</label>
                     <select
                         name="diet"
@@ -309,7 +356,7 @@ function Profile() {
                     </select>
                 </div>
 
-                <div>
+                <div className="profile-field">
                     <label>Days Per Week:</label>
                     <input
                         type="number"
@@ -328,7 +375,11 @@ function Profile() {
 
             </form>
 
-            {message && <p>{message}</p>}
+            {message && (
+                <p className="profile-message">
+                    {message}
+                </p>
+            )}
         </div>
     );
 }

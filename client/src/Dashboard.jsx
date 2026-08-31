@@ -45,7 +45,7 @@ function Dashboard () {
             setDietPlan(data.dietPlan);
             setPlanStatus({
                 hasPlans: true,
-                isOutDated: false
+                isOutdated: false
             });
 
             setMessage("AI plan generated successfully");
@@ -86,7 +86,7 @@ function Dashboard () {
 
             setPlanStatus({
                 hasPlans: true,
-                isOutDated: false
+                isOutdated: false
             });
 
             setMessage("AI plan regenerated successfully");
@@ -189,12 +189,14 @@ function Dashboard () {
         return <p>{message || "Profile not found"}</p>;
     }
 
+    console.log("Current planStatus:", planStatus);
+
     return (
         <div>
             <div className ="dashboard-container">
                 <div className="dashboard-header">
                     <div>
-                        <h1>AI Personal Trainer</h1>
+                        <h1>mAI Personal Trainer</h1>
                         <p>Your personalized fitness dashboard</p>
                     </div>
 
@@ -203,7 +205,7 @@ function Dashboard () {
                     </button>
                 </div>
             </div>
-            
+
             <h2>Dashboard</h2>
 
             {planStatus?.isOutdated && (
