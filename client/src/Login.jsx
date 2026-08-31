@@ -54,43 +54,55 @@ function Login() {
         }
     };
     return (
-        <div>
+    <div className="auth-page">
+        <div className="auth-card">
+
             <h2>Login</h2>
 
-            <form onSubmit={handleSubmit}>
+            <form className="auth-form" onSubmit={handleSubmit}>
 
-                <div>
+                <div className="auth-field">
                     <label>Email:</label>
                     <input 
-                        type = "email"
-                        name = "email"
-                        value = {formData.email}
+                        type="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <div>
+
+                <div className="auth-field">
                     <label>Password:</label>
                     <input
                         type="password"
-                        name= "password"
+                        name="password"
                         value={formData.password}
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <button type = "submit">
+
+                <button type="submit">
                     Login
                 </button>
-                <p>
+
+                <p className="auth-link">
                     Don't have an account?{" "}
                     <Link to="/register">Register</Link>
                 </p>
+
             </form>
 
-            {message && <p>{message}</p>}
+            {message && (
+                <p className="auth-message">
+                    {message}
+                </p>
+            )}
+
         </div>
-    )
+    </div>
+);
 }
 
 export default Login;

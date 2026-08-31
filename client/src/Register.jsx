@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "./AuthContext";
+import { Link } from "react-router-dom";
 
 function Register() {
 
@@ -62,49 +63,66 @@ function Register() {
     };
 
     return (
-        <div>
-            <h1>Create Account</h1>
+        <div className="auth-page">
+            <div className="auth-card">
 
-            <form onSubmit = {handleSubmit}>
+                <h2>Create Account</h2>
 
-                <div>
-                    <label> Name</label>
+                <form className="auth-form" onSubmit={handleSubmit}>
 
-                    <input
-                        type = "text"
-                        name = "name"
-                        value = {formData.name}
-                        onChange = {handleChange}
-                    />
-                </div>
+                    <div className="auth-field">
+                        <label>Name</label>
 
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </div>
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
 
-                <div>
-                    <label>Password</label>
+                    <div className="auth-field">
+                        <label>Email</label>
 
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                </div>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
 
-                <button type = "submit">
-                    Register
-                </button>
+                    <div className="auth-field">
+                        <label>Password</label>
 
-            </form>
-            {message && <p>{message}</p>}
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <button type="submit">
+                        Register
+                    </button>
+                    <p className="auth-link">
+                        Already have an account?{" "}
+                        <Link to="/">Login</Link>
+                    </p>
+
+                </form>
+
+                {message && (
+                    <p className="auth-message">
+                        {message}
+                    </p>
+                )}
+
+            </div>
         </div>
     );
 }
