@@ -1,9 +1,10 @@
 import { useEffect , useState } from "react";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "./api";
 
 function Dashboard () {
-    const { token } = useAuth();
+    const { token, logout } = useAuth();
     const navigate = useNavigate();
 
     const[profile, setProfile] = useState(null);
@@ -22,15 +23,17 @@ function Dashboard () {
             setGeneratingPlan(true);
             setMessage("");
 
-            const response = await fetch(
+            const response = await apiFetch(
                 "http://localhost:5000/api/ai-plan",
                 {
-                    method:"POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                }
+                    method:"POST"
+                },
+                logout
             );
+
+            if (!response) {
+                return;
+            }
 
             const data = await response.json();
 
@@ -62,15 +65,16 @@ function Dashboard () {
             setRegeneratingPlan(true);
             setMessage("");
 
-            const response = await fetch(
+            const response = await apiFetch(
                 "http://localhost:5000/api/ai-plan?regenerate=true",
                 {
-                    method: "POST",
-                    headers: {
-                        "Authorization":`Bearer ${token}`
-                    }
-                }
+                    method: "POST"
+                },
+                logout
             );
+            if (!response) {
+                return;
+            }
 
             const data = await response.json();
 
@@ -106,35 +110,30 @@ function Dashboard () {
             try {
                 const [profileResponse, dietResponse, workoutResponse] =
                     await Promise.all([
-                        fetch("http://localhost:5000/api/profile", {
+                        apiFetch("http://localhost:5000/api/profile", {
                             method: "GET",
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        }),
+                        },
+                        logout
+                        ),
                     
-                        fetch("http://localhost:5000/api/diet", {
+                        apiFetch("http://localhost:5000/api/diet", {
                             method: "GET",
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        }),
+                        },
+                        logout
+                        ),
                     
-                        fetch("http://localhost:5000/api/workout", {
+                        apiFetch("http://localhost:5000/api/workout", {
                             method: "GET",
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        })
+                        },
+                        logout
+                        )
                     ]);
-                const statusResponse = await fetch(
+                const statusResponse = await apiFetch(
                     "http://localhost:5000/api/ai-plan/status",
                     {
                         method: "GET",
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        }
-                    }
+                    },
+                    logout
                 );
                 const statusData = await statusResponse.json();
 
@@ -179,7 +178,7 @@ function Dashboard () {
         };
 
         fetchDashboardData();
-    },[token]);
+    },[token,logout]);
 
     if(loading) {
         return <p>Loading Dashboard...</p>;

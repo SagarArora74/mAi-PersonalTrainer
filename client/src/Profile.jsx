@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "./api";
+import { useAuth } from "./AuthContext";
 
 function Profile() {
     const [formData, setFormData] = useState({
@@ -19,26 +21,26 @@ function Profile() {
     const [loading, setLoading] = useState(true)
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
+        logout();
         navigate("/");
     };
 
     useEffect(() =>{
         const fetchProfile = async () => {
             try {
-                const token = localStorage.getItem("token");
-
-                const response = await fetch(
+                const response = await apiFetch(
                     "http://localhost:5000/api/profile",
                     {
-                        method: "GET",
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        }
-                    }
+                        method: "GET"
+                    },
+                    logout
                 );
+                if (!response) {
+                    return;
+                }
                 const data = await response.json();
 
                 if(response.ok) {
@@ -51,7 +53,7 @@ function Profile() {
             }
         };
         fetchProfile();
-    },[]);
+    },[logout]);
 
     const handleChange = (e) => {
         setFormData({
@@ -64,15 +66,12 @@ function Profile() {
         e.preventDefault();
 
         try{
-            const token = localStorage.getItem("token");
-
-            const response = await fetch(
+            const response = await apiFetch(
                 "http://localhost:5000/api/profile",
                 {
                     method: "POST",
                     headers: {
                         "Content-Type":"application/json",
-                        "Authorization":`Bearer ${token}`
                     },
                     body: JSON.stringify({
                         ...formData,
@@ -81,8 +80,12 @@ function Profile() {
                         weight: Number(formData.weight),
                         daysPerWeek: Number(formData.daysPerWeek)
                     })
-                }
+                },
+                logout
             );
+            if(!response) {
+                return;
+            }
             const data = await response.json();
 
             if(response.ok) {
@@ -106,15 +109,13 @@ function Profile() {
         e.preventDefault();
 
         try {
-            const token = localStorage.getItem("token");
 
-            const response = await fetch(
+            const response = await apiFetch(
                 "http://localhost:5000/api/profile",
                 {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization":`Bearer ${token}`
                     },
                     body: JSON.stringify({
                         ...formData,
@@ -123,8 +124,12 @@ function Profile() {
                         weight: Number(formData.weight),
                         daysPerWeek: Number(formData.daysPerWeek)
                     })
-                }
+                },
+                logout
             );
+            if (!response) {
+                return;
+            }
             const data = await response.json();
 
             if (response.ok) {
