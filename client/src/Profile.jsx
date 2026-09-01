@@ -279,7 +279,7 @@ function Profile() {
                 </div>
 
                 <div className="profile-field">
-                    <label>Height:</label>
+                    <label>Height (cm):</label>
                     <input
                         type="number"
                         name="height"
@@ -290,7 +290,7 @@ function Profile() {
                 </div>
 
                 <div className="profile-field">
-                    <label>Weight:</label>
+                    <label>Weight(Kg):</label>
                     <input
                         type="number"
                         name="weight"

@@ -493,20 +493,49 @@
 }
 
 .profile-page {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+
+    background-image: url("/profile-bg.png");
+    background-size: 100% auto;
+    background-position: center top;
+    background-repeat: no-repeat;
+
+    padding: 50px 20px;
+    box-sizing: border-box;
 }
 
 .profile-page h2 {
-    text-align: center;
-    margin-bottom: 35px;
+    color: #39D353;
+    font-family: "Poppins", "Segoe UI", sans-serif;
 }
 
 .profile-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    font-family: "Poppins", sans-serif;
+    text-align: left;
+    max-width: 500px;
+    margin: 30px 8% 30px auto;
+    padding: 30px;
+
+    background: rgba(10, 15, 18, 0.78);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+
+    box-sizing: border-box;
+}
+.profile-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    font-weight: 600;
+    color: #39D353;
 }
 
 .profile-field {
@@ -538,6 +567,12 @@
     border-radius: 6px;
     font-size: 16px;
     cursor: pointer;
+    background: #39D353;
+    color: #ffffff;
+}
+.profile-form button[type="submit"]:hover {
+    background: #2fbd49;
+    transform: translateY(-1px);
 }
 
 .existing-profile {
