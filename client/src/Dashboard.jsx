@@ -31,7 +31,7 @@ function Dashboard () {
             setMessage("");
 
             const response = await apiFetch(
-                "http://localhost:5000/api/ai-plan",
+                "/api/ai-plan",
                 {
                     method:"POST"
                 },
@@ -73,7 +73,7 @@ function Dashboard () {
             setMessage("");
 
             const response = await apiFetch(
-                "http://localhost:5000/api/ai-plan?regenerate=true",
+                "/api/ai-plan?regenerate=true",
                 {
                     method: "POST"
                 },
@@ -117,31 +117,34 @@ function Dashboard () {
             try {
                 const [profileResponse, dietResponse, workoutResponse] =
                     await Promise.all([
-                        apiFetch("http://localhost:5000/api/profile", {
+                        apiFetch("/api/profile", {
                             method: "GET",
                         },
                         logout
                         ),
                     
-                        apiFetch("http://localhost:5000/api/diet", {
+                        apiFetch("/api/diet", {
                             method: "GET",
                         },
                         logout
                         ),
                     
-                        apiFetch("http://localhost:5000/api/workout", {
+                        apiFetch("/api/workout", {
                             method: "GET",
                         },
                         logout
                         )
                     ]);
                 const statusResponse = await apiFetch(
-                    "http://localhost:5000/api/ai-plan/status",
+                    "/api/ai-plan/status",
                     {
                         method: "GET",
                     },
                     logout
                 );
+                if(!statusResponse) {
+                    return;
+                }
                 const statusData = await statusResponse.json();
 
                 if(statusResponse.ok) {

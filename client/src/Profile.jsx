@@ -32,7 +32,7 @@ function Profile() {
         const fetchProfile = async () => {
             try {
                 const response = await apiFetch(
-                    "http://localhost:5000/api/profile",
+                    "/api/profile",
                     {
                         method: "GET"
                     },
@@ -67,7 +67,7 @@ function Profile() {
 
         try{
             const response = await apiFetch(
-                "http://localhost:5000/api/profile",
+                "/api/profile",
                 {
                     method: "POST",
                     headers: {
@@ -111,7 +111,7 @@ function Profile() {
         try {
 
             const response = await apiFetch(
-                "http://localhost:5000/api/profile",
+                "/api/profile",
                 {
                     method: "PUT",
                     headers: {
