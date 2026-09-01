@@ -7,6 +7,7 @@ function Login() {
 
     const navigate = useNavigate();
     const { login } = useAuth();
+    const [showPassword, setShowPassword] = useState(false);
 
     const [formData , setFormData] = useState({
         email: "",
@@ -64,9 +65,9 @@ function Login() {
             <div className="auth-card">
 
                 <h2>Login</h2>
-        
+
                 <form className="auth-form" onSubmit={handleSubmit}>
-        
+
                     <div className="auth-field">
                         <label>Email:</label>
                         <input 
@@ -77,29 +78,39 @@ function Login() {
                             required
                         />
                     </div>
-        
+
                     <div className="auth-field">
                         <label>Password:</label>
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                        />
+                        <div className="password-input">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+                        
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
                     </div>
-        
+
                     <button type="submit">
                         Login
                     </button>
-        
+
                     <p className="auth-link">
                         Don't have an account?{" "}
                         <Link to="/register">Register</Link>
                     </p>
-        
+
                 </form>
-        
+
                 {message && (
                     <p className="auth-message">
                         {message}
