@@ -5,7 +5,7 @@ mAI-PersonalTrainer is a full-stack AI-powered personal training platform that p
 ## Live Application
 
 **Live Demo:**  
-https://mai-personal-trainer-3siy5olch-potatoes3.vercel.app
+https://mai-personal-trainer.vercel.app
 
 **Backend API:**  
 https://mai-personaltrainer-api.onrender.com
